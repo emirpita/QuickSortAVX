@@ -12,9 +12,6 @@
 #endif
 #include "input_data.cpp"
 #include "quicksort-all.cpp"
-#include "avx2-altquicksort.h"
-#include "avx2-nate-quicksort.cpp"
-#include "avx2-natenodutch-quicksort.h"
 #define USE_RDTSC // undef to get measurments in seconds
 #ifdef USE_RDTSC
 #   include "rdtsc.cpp"
@@ -144,9 +141,6 @@ class Flags {
         bool std_stable_sort;
         bool quicksort;
         bool avx2;
-        bool avx2_nate;
-        bool avx2_alt;
-        bool avx2_natenodutch;
 
     public:
         Flags(const CommandLine& cmd) {
@@ -179,17 +173,6 @@ class Flags {
                 any_set = true;
             }
 
-            if (cmd.has("-avx2-alt")) {
-                avx2_alt = true;
-                any_set = true;
-            }
-
-            if (cmd.has("-avx2-nate")) {
-                avx2_nate = true;
-                avx2_natenodutch = true;
-                any_set = true;
-            }
-
             if (!any_set) {
                 enable_all(true);
             }
@@ -201,9 +184,6 @@ class Flags {
             std_stable_sort = val;
             quicksort     = val;
             avx2          = val;
-            avx2_nate     = val;
-            avx2_alt      = val;
-            avx2_natenodutch = val;
         }
 };
 
@@ -268,24 +248,13 @@ public:
         if (flags.std_qsort) {
             measure("quick sort", quicksort);
         }
-#ifdef HAVE_AVX2_INSTRUCTIONS
+
         if (flags.avx2) {
             measure("AVX2 quick sort", qs::avx2::quicksort);
         }
 
-        if (flags.avx2_natenodutch) {
-            measure("AVX2 nate nodutch", avx_natenodutch_quicksort);
-        }
 
-        if (flags.avx2_alt) {
-            measure("AVX2 alt quicksort", wrapped_avx2_pivotonlast_sort);
-        }
 
-        if (flags.avx2_nate) {
-            measure("AVX2 Nate's variant", nate::wrapped_avx2_pivotonlast_sort);
-        }
-
-#endif
 
     }
 

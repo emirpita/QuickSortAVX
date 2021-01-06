@@ -96,12 +96,6 @@ private:
 class Flags {
     public:
         bool avx2;
-        bool avx2_alt;
-        bool avx2_nate;
-        bool avx512;
-        bool avx512_buf;
-        bool avx512_popcnt;
-        bool avx512_bmi;
 
     public:
         Flags(const CommandLine& cmd) {
@@ -114,35 +108,6 @@ class Flags {
                 any_set = true;
             }
 
-            if (cmd.has("-avx2-alt")) {
-                avx2_alt = true;
-                any_set = true;
-            }
-
-            if (cmd.has("-avx2-nate")) {
-                avx2_nate = true;
-                any_set = true;
-            }
-
-            if (cmd.has("-avx512")) {
-                avx512 = true;
-                any_set = true;
-            }
-
-            if (cmd.has("-avx512-buf")) {
-                avx512_buf = true;
-                any_set = true;
-            }
-
-            if (cmd.has("-avx512-popcnt")) {
-                avx512_popcnt = true;
-                any_set = true;
-            }
-
-            if (cmd.has("-avx512-bmi")) {
-                avx512_bmi = true;
-                any_set = true;
-            }
 
             if (!any_set) {
                 enable_all(true);
@@ -151,12 +116,6 @@ class Flags {
 
         void enable_all(bool val) {
             avx2          = val;
-            avx2_nate     = val;
-            avx2_alt      = val;
-            avx512        = val;
-            avx512_buf    = val;
-            avx512_popcnt = val;
-            avx512_bmi    = val;
         }
 };
 

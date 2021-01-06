@@ -8,9 +8,6 @@
 #include "cmdline.cpp"
 #include "input_data.cpp"
 #include "quicksort-all.cpp"
-#include "avx2-altquicksort.h"
-#include "avx2-nate-quicksort.cpp"
-
 
 bool is_sorted(uint32_t* array, size_t n) {
     assert(n > 0);
@@ -98,8 +95,6 @@ private:
 class Flags {
 public:
     bool avx2;
-    bool avx2_alt;
-    bool avx2_nate;
 
 public:
     Flags(const CommandLine& cmd) {
@@ -112,15 +107,6 @@ public:
             any_set = true;
         }
 
-        if (cmd.has("-avx2-alt")) {
-            avx2_alt = true;
-            any_set = true;
-        }
-
-        if (cmd.has("-avx2-nate")) {
-            avx2_nate = true;
-            any_set = true;
-        }
 
         if (!any_set) {
             enable_all(true);
@@ -129,8 +115,6 @@ public:
 
     void enable_all(bool val) {
         avx2          = val;
-        avx2_nate     = val;
-        avx2_alt      = val;
     }
 };
 
@@ -148,7 +132,7 @@ int main(int argc, char* argv[]) {
     Test test(verbose);
     int ret = EXIT_SUCCESS;
 
-#ifdef HAVE_AVX2_INSTRUCTIONS
+
     if (flags.avx2) {
         printf("AVX2 base version... "); fflush(stdout);
         if (test.run(qs::avx2::quicksort)) {
@@ -159,26 +143,9 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    if (flags.avx2_alt) {
-        printf("AVX2 alt version... "); fflush(stdout);
-        if (test.run(wrapped_avx2_pivotonlast_sort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
-    }
 
-    if (flags.avx2_nate) {
-        printf("AVX2 Nate's variant... "); fflush(stdout);
-        if (test.run(nate::wrapped_avx2_pivotonlast_sort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
-    }
-#endif
+
+
 
 
     return ret;
