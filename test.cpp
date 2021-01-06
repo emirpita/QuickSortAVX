@@ -8,8 +8,6 @@
 #include "cmdline.cpp"
 #include "input_data.cpp"
 #include "quicksort-all.cpp"
-#include "avx2-altquicksort.h"
-#include "avx2-nate-quicksort.cpp"
 
 
 bool is_sorted(uint32_t* array, size_t n) {
@@ -176,86 +174,19 @@ int main(int argc, char* argv[]) {
     Test test(verbose);
     int ret = EXIT_SUCCESS;
 
-#ifdef HAVE_AVX2_INSTRUCTIONS
-    if (flags.avx2) {
-        printf("AVX2 base version... "); fflush(stdout);
-        if (test.run(qs::avx2::quicksort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
+
+
+    printf("AVX2 base version... "); fflush(stdout);
+    if (test.run(qs::avx2::quicksort)) {
+        puts("OK");
+    } else {
+        puts("FAILED");
+        ret = EXIT_FAILURE;
     }
 
-    if (flags.avx2_alt) {
-        printf("AVX2 alt version... "); fflush(stdout);
-        if (test.run(wrapped_avx2_pivotonlast_sort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
-    }
 
-    if (flags.avx2_nate) {
-        printf("AVX2 Nate's variant... "); fflush(stdout);
-        if (test.run(nate::wrapped_avx2_pivotonlast_sort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
-    }
-#endif
 
-#ifdef HAVE_AVX512F_INSTRUCTIONS
 
-#ifdef POPCNT_LOOKUP
-    prepare_lookup();
-#endif
-
-    if (flags.avx512) {
-        printf("AVX512 base version... "); fflush(stdout);
-        if (test.run(qs::avx512::quicksort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
-    }
-
-    if (flags.avx512_popcnt) {
-        printf("AVX512 + popcnt version... "); fflush(stdout);
-        if (test.run(qs::avx512::popcnt_quicksort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
-    }
-
-    if (flags.avx512_buf) {
-        printf("AVX512 with aux buffers... "); fflush(stdout);
-        if (test.run(qs::avx512::auxbuffer_quicksort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
-    }
-
-#if 0
-    if (flags.avx512_bmi) {
-        printf("AVX512 + bmi2 version ... "); fflush(stdout);
-        if (test.run(qs::avx512::bmi2_quicksort)) {
-            puts("OK");
-        } else {
-            puts("FAILED");
-            ret = EXIT_FAILURE;
-        }
-    }
-#endif
-#endif // HAVE_AVX512F_INSTRUCTIONS
 
     return ret;
 }
