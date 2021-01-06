@@ -12,7 +12,7 @@
 #endif
 #include "input_data.cpp"
 #include "quicksort-all.cpp"
-#define USE_RDTSC // undef to get measurments in seconds
+//#define USE_RDTSC // undef to get measurments in seconds
 #ifdef USE_RDTSC
 #   include "rdtsc.cpp"
 #else
@@ -50,7 +50,7 @@ public:
 
             uint64_t t1, t2;
 
-#ifdef USE_RDTSC
+ #ifdef USE_RDTSC
             RDTSC_START(t1);
 #else
             t1 = get_time();

@@ -23,7 +23,7 @@ bool is_sorted(uint32_t* array, size_t n) {
 }
 
 
-const size_t AVX512_REGISTER_SIZE = 16;
+const size_t AVX2_REGISTER_SIZE = 16;
 
 
 class Test {
@@ -35,8 +35,8 @@ public:
 
     template <typename SORT_FN>
     bool run(SORT_FN sort) {
-        const size_t start = 2*AVX512_REGISTER_SIZE;
-        const size_t end   = 256*AVX512_REGISTER_SIZE;
+        const size_t start = 2*AVX2_REGISTER_SIZE;
+        const size_t end   = 256*AVX2_REGISTER_SIZE;
 
         if (verbose) {
             putchar('\n');
