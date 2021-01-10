@@ -196,16 +196,17 @@ namespace qs {
 
         __m256 FORCE_INLINE bitmask_to_bytemask_ps(uint8_t bm) {
 
-            const __m256 mask = _mm256_set1_epi32(bm);
-            const __m256 bits = _mm256_setr_epi32(0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80);
-            const __m256 tmp = _mm256_and_si256(mask, bits);
+            const __m256 mask = _mm256_set1_ps(bm);
+            const __m256 bits = _mm256_setr_ps(0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80);
+            const __m256 tmp = _mm256_and_ps(mask, bits);
 
             return _mm256_cmp_ps(tmp, bits, _CMP_EQ_OQ);
         }
 
 
+
         void FORCE_INLINE
-        align_masks_ps(uint8_t &a, uint8_t &b, uint8_t &rem_a, uint8_t &rem_b, __m256 &shuffle_a, __m256 &shuffle_b) {
+        align_masks_ps(uint8_t &a, uint8_t &b, uint8_t &rem_a, uint8_t &rem_b, __m256i &shuffle_a, __m256i &shuffle_b) {
 
             assert(a != 0);
             assert(b != 0);
@@ -237,29 +238,29 @@ namespace qs {
             rem_a = tmpA;
             rem_b = tmpB;
 
-            shuffle_a = _mm256_load_si256((__m256i *) tmpshufa);
-            shuffle_b = _mm256_load_si256((__m256i *) tmpshufb);
+            shuffle_a = _mm256_load_si256((__m256i*)tmpshufa);
+            shuffle_b = _mm256_load_si256((__m256i*)tmpshufb);
         }
 
 
         __m256 FORCE_INLINE merge_ps(const __m256 mask, const __m256 a, const __m256 b) {
 
-            return _mm256_or_si256(
-                    _mm256_and_si256(mask, a),
-                    _mm256_andnot_si256(mask, b)
+            return _mm256_or_ps(
+                    _mm256_and_ps(mask, a),
+                    _mm256_andnot_ps(mask, b)
             );
         }
 
 
         void FORCE_INLINE swap_ps(
-                __m256i &a, __m256i &b,
+                __m256 &a, __m256 &b,
                 uint8_t mask_a, const __m256i shuffle_a,
                 uint8_t mask_b, const __m256i shuffle_b) {
 
-            const __m256i to_swap_b = _mm256_permutevar8x32_epi32(a, shuffle_a);
-            const __m256i to_swap_a = _mm256_permutevar8x32_epi32(b, shuffle_b);
-            const __m256i ma = bitmask_to_bytemask_ps(mask_a);
-            const __m256i mb = bitmask_to_bytemask_ps(mask_b);
+            const __m256 to_swap_b = _mm256_permutevar8x32_ps(a, shuffle_a);
+            const __m256 to_swap_a = _mm256_permutevar8x32_ps(b, shuffle_b);
+            const __m256 ma = bitmask_to_bytemask_ps(mask_a);
+            const __m256 mb = bitmask_to_bytemask_ps(mask_b);
 
             a = merge_ps(ma, to_swap_a, a);
             b = merge_ps(mb, to_swap_b, b);
@@ -291,9 +292,9 @@ namespace qs {
                         }
                         // (__m256*)(array + left)
                         L = _mm256_loadu_ps((const float *) (array + left));
-                        const __m256 bytemask = _mm256_cmp_ps(pivot, L,);
+                        const __m256 bytemask = _mm256_cmp_ps(pivot, L, _CMP_GT_OQ);
 
-                        if (_mm256_testc_ps((__m256) bytemask, (__m256) _mm256_set1_epi32(-1))) {
+                        if (_mm256_testc_ps((__m256) bytemask, (__m256) _mm256_set1_ps(-1))) {
                             left += N;
                         } else {
                             maskL = ~_mm256_movemask_ps((__m256) bytemask);
@@ -308,10 +309,10 @@ namespace qs {
                         if ((right - N) - left + 1 < 2 * N) {
                             goto end;
                         }
-
-                        R = _mm256_loadu_si256((__m256i *) (array + right - N + 1));
-                        const __m256i bytemask = _mm256_cmpgt_epi32(pivot, R);
-                        if (_mm256_iszero(bytemask)) {
+                                            // (__m256i *) (array + right - N + 1)
+                        R = _mm256_loadu_ps((const float*) (array + right - N + 1));
+                        const __m256 bytemask = _mm256_cmp_ps(pivot, R, _CMP_GT_OQ);
+                        if (_mm256_iszero_ps(bytemask)) {
                             right -= N;
                         } else {
                             maskR = _mm256_movemask_ps((__m256) bytemask);
@@ -327,8 +328,8 @@ namespace qs {
 
                 uint8_t mL;
                 uint8_t mR;
-                __m256 shuffleL;
-                __m256 shuffleR;
+                __m256i shuffleL;
+                __m256i shuffleR;
 
                 align_masks_ps(maskL, maskR, mL, mR, shuffleL, shuffleR);
                 swap_ps(L, R, maskL, shuffleL, maskR, shuffleR);
@@ -337,12 +338,12 @@ namespace qs {
                 maskR = mR;
 
                 if (maskL == 0) {
-                    _mm256_storeu_si256((__m256 *) (array + left), L);
+                    _mm256_storeu_ps((float*) (array + left), L);
                     left += N;
                 }
 
                 if (maskR == 0) {
-                    _mm256_storeu_si256((__m256i *) (array + right - N + 1), R);
+                    _mm256_storeu_ps((float *) (array + right - N + 1), R);
                     right -= N;
                 }
 
@@ -353,9 +354,9 @@ namespace qs {
             assert(!(maskL != 0 && maskR != 0));
 
             if (maskL != 0) {
-                _mm256_storeu_si256((__m256i *) (array + left), L);
+                _mm256_storeu_ps((float *) (array + left), L);
             } else if (maskR != 0) {
-                _mm256_storeu_si256((__m256i *) (array + right - N + 1), R);
+                _mm256_storeu_ps((float *) (array + right - N + 1), R);
             }
 
             if (left < right) {
@@ -370,12 +371,12 @@ namespace qs {
 
                 if (all == less) {
                     // all elements in range [left, right] less than pivot
-                    scalar_partition_epi32(array, pv, origL, left);
+                    scalar_partition_ps(array, pv, origL, left);
                 } else if (all == greater) {
                     // all elements in range [left, right] greater than pivot
-                    scalar_partition_epi32(array, pv, left, origR);
+                    scalar_partition_ps(array, pv, left, origR);
                 } else {
-                    scalar_partition_epi32(array, pv, left, right);
+                    scalar_partition_ps(array, pv, left, right);
                 }
             }
         }

@@ -8,7 +8,7 @@
 
 #include "cmdline.cpp"
 #ifdef WITH_RUNTIME_STATS
-#   include "runtime_stats.cpp" // must be included before anything else
+#   include "runtime_stats.cpp"
 #endif
 #include "input_data.cpp"
 #include "quicksort-all.cpp"

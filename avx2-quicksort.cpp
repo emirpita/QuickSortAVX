@@ -27,6 +27,28 @@ namespace qs {
             }
         }
 
+        void quicksort_ps(float* array, int left, int right) {
+
+            int i = left;
+            int j = right;
+
+            const float pivot = array[(i + j)/2];
+            const int AVX2_REGISTER_SIZE = 8; // in 32-bit words
+
+            if (j - i >= 2 * AVX2_REGISTER_SIZE) {
+                qs::avx2::partition_ps(array, pivot, i, j);
+            } else {
+                scalar_partition_ps(array, pivot, i, j);
+            }
+
+            if (left < j) {
+                quicksort_ps(array, left, j);
+            }
+
+            if (i < right) {
+                quicksort_ps(array, i, right);
+            }
+        }
     } // namespace avx2
 
 } // namespace qs
