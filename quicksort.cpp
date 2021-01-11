@@ -1,5 +1,6 @@
 #include "partition.cpp"
 
+//dodati sa template typename za razlicite ove tipove
 void quicksort(uint32_t* array, int left, int right) {
 
     int i = left;

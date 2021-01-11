@@ -34,12 +34,59 @@ void scalar_partition_ps(float* array, const float pivot, int& left, int& right)
 
         if (left <= right) {
             const float t = array[left];
-            array[left]      = array[right];
-            array[right]     = t;
+            array[left] = array[right];
+            array[right] = t;
 
-            left  += 1;
+            left += 1;
             right -= 1;
         }
     }
 }
+
+void scalar_partition_16(uint16_t *array, const uint16_t pivot, int &left, int &right) {
+
+    while (left <= right) {
+
+        while (array[left] < pivot) {
+            left += 1;
+        }
+
+        while (array[right] > pivot) {
+            right -= 1;
+        }
+
+        if (left <= right) {
+            const uint16_t t = array[left];
+            array[left] = array[right];
+            array[right] = t;
+
+            left += 1;
+            right -= 1;
+        }
+    }
+}
+
+void scalar_partition_64(uint64_t *array, const uint64_t pivot, int &left, int &right) {
+
+    while (left <= right) {
+
+        while (array[left] < pivot) {
+            left += 1;
+        }
+
+        while (array[right] > pivot) {
+            right -= 1;
+        }
+
+        if (left <= right) {
+            const uint64_t t = array[left];
+            array[left] = array[right];
+            array[right] = t;
+
+            left += 1;
+            right -= 1;
+        }
+    }
+}
+
 
