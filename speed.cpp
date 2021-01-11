@@ -250,11 +250,24 @@ public:
         }
 
         if (flags.avx2) {
-            measure("AVX2 quick sort", qs::avx2::quicksort);
+            measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
         }
 
-
-
+        if (flags.avx2) {
+            measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
+        }
+        if (flags.avx2) {
+            measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
+        }
+        if (flags.avx2) {
+            measure("AVX2 quick sort for 64-bit integer", qs::avx2::quicksort_64);
+        }
+        if (flags.avx2) {
+            measure("AVX2 quick sort for float", qs::avx2::quicksort_ps);
+        }
+        if (flags.avx2) {
+            measure("AVX2 quick sort for double", qs::avx2::quicksort_pd);
+        }
 
     }
 
