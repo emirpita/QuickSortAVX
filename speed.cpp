@@ -230,7 +230,6 @@ public:
     void run() {
 
         printf("<------------------------------------------->");
-        printf("Test for type: %s", NumericType.name()); // valjda radi
         printf("items count: %lu (%lu bytes), input %s\n", data->count(), data->size(), as_string(type));
 
         ref = 0;
@@ -262,7 +261,7 @@ private:
     template <typename SORT_FUNCTION>
     void measure(const char* name, SORT_FUNCTION sort) {
 
-        PerformanceTest test(iterations, *data);
+        PerformanceTest<NumericType> test(iterations, *data);
 
         printf("%30s ... ", name); fflush(stdout);
 #ifdef WITH_RUNTIME_STATS
@@ -311,9 +310,9 @@ private:
 
     void checkType() {
         // suzu sam pustio
-        if (std::is_same<NumericType, uint8_t>::value || std::is_same<NumericType, char>::value)
+        if (std::is_same<NumericType, uint8_t>::value || std::is_same<NumericType, char>::value) {
             measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
-        else if (std::is_same<NumericType, uint16_t>::same || std::is_same<NumericType, short>::value)
+        } else if (std::is_same<NumericType, uint16_t>::same || std::is_same<NumericType, short>::value)
             measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
         else if (std::is_same<NumericType, uint32_t>::value || std::is_same<NumericType, int>::value)
             measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
