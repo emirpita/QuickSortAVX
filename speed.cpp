@@ -383,8 +383,22 @@ int main(int argc, char* argv[]) {
 #endif
     CommandLine cmd(argc, argv);
     Flags flags(cmd);
-    Test test(type, count, iterations, std::move(flags));
-    test.run();
 
+    // testovi za numericke tipove
+    // samo pozivanje speed-a ce raditi za sve tipove, kao sto je ovdje napisano
+    // samo ce se moci unositi ovi razliciti parametri
+    // morao sam hadrkodirati
+    Test<uint8_t> test8b(type, count, iterations, std::move(flags));
+    test8b.run();
+    Test<uint16_t> test16b(type, count, iterations, std::move(flags));
+    test16b.run();
+    Test<uint32_t> test32b(type, count, iterations, std::move(flags));
+    test32b.run();
+    Test<uint64_t> test64b(type, count, iterations, std::move(flags));
+    test64b.run();
+    Test<float> testFloat(type, count, iterations, std::move(flags));
+    testFloat.run();
+    Test<double> testDouble(type, count, iterations, std::move(flags));
+    testDouble.run();
     return EXIT_SUCCESS;
 }
