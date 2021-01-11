@@ -84,11 +84,11 @@ public:
 
 
 private:
-    template<typename SORT_FN>
-    bool test(SORT_FN sort, InputData<NumericType> &data) {
+    template<typename SORT_FN, typename Numeric>
+    bool test(SORT_FN sort, InputData<Numeric> &data) {
         sort(data.pointer(), 0, data.count() - 1);
 
-        return is_sorted<NumericType>(data.pointer(), data.count());
+        return is_sorted<Numeric>(data.pointer(), data.count());
     }
 };
 

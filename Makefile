@@ -1,7 +1,7 @@
 .SUFFIXES:
 .PHONY: all clean
 
-FLAGS=-std=c++11 -mbmi2 -Wall -pedantic -Wextra
+FLAGS=-std=c++17 -mbmi2 -Wall -pedantic -Wextra
 FLAGS_AVX2=$(FLAGS) -mavx2 -msse3 -DHAVE_AVX2_INSTRUCTIONS
 
 DEPS_SORT=partition.cpp \

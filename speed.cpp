@@ -19,6 +19,8 @@
 #   include "gettime.cpp"
 #endif
 
+
+
 template<typename NumericType>
 class PerformanceTest final {
 
@@ -235,19 +237,19 @@ public:
         ref = 0;
 
         if (flags.std_sort) {
-            measure("std::sort", std_sort_wrapper);
+            measure("std::sort", std_sort_wrapper<NumericType>);
         }
 
         if (flags.std_qsort) {
-            measure("std::qsort", std_qsort_wrapper);
+            measure("std::qsort", std_qsort_wrapper<NumericType>);
         }
 
         if (flags.std_stable_sort) {
-            measure("std::stable_sort", std_stable_sort_wrapper);
+            measure("std::stable_sort", std_stable_sort_wrapper<NumericType>);
         }
 
         if (flags.std_qsort) {
-            measure("quick sort", quicksort);
+            measure("quick sort", quicksort<NumericType>);
         }
 
         // AVX2 sortiranje s obzirom na tip
@@ -256,6 +258,157 @@ public:
             checkType();
         }
     }
+/*
+    template<> void run<uint16_t() {
+
+        printf("<------------------------------------------->");
+        printf("items count: %lu (%lu bytes), input %s\n", data->count(), data->size(), as_string(type));
+
+        ref = 0;
+
+        if (flags.std_sort) {
+            measure("std::sort", std_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("std::qsort", std_qsort_wrapper<NumericType>);
+        }
+
+        if (flags.std_stable_sort) {
+            measure("std::stable_sort", std_stable_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("quick sort", quicksort<NumericType>);
+        }
+
+        // AVX2 sortiranje s obzirom na tip
+
+        if (flags.avx2) {
+            measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
+        }
+    }
+
+    template<> void run<uint32_t>() {
+
+        printf("<------------------------------------------->");
+        printf("items count: %lu (%lu bytes), input %s\n", data->count(), data->size(), as_string(type));
+
+        ref = 0;
+
+        if (flags.std_sort) {
+            measure("std::sort", std_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("std::qsort", std_qsort_wrapper<NumericType>);
+        }
+
+        if (flags.std_stable_sort) {
+            measure("std::stable_sort", std_stable_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("quick sort", quicksort<NumericType>);
+        }
+
+        // AVX2 sortiranje s obzirom na tip
+
+        if (flags.avx2) {
+            measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
+        }
+    }
+
+    template<> void run<uint64_t>() {
+
+        printf("<------------------------------------------->");
+        printf("items count: %lu (%lu bytes), input %s\n", data->count(), data->size(), as_string(type));
+
+        ref = 0;
+
+        if (flags.std_sort) {
+            measure("std::sort", std_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("std::qsort", std_qsort_wrapper<NumericType>);
+        }
+
+        if (flags.std_stable_sort) {
+            measure("std::stable_sort", std_stable_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("quick sort", quicksort<NumericType>);
+        }
+
+        // AVX2 sortiranje s obzirom na tip
+
+        if (flags.avx2) {
+            measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
+        }
+    }
+
+    template<> void run<float>() {
+
+        printf("<------------------------------------------->");
+        printf("items count: %lu (%lu bytes), input %s\n", data->count(), data->size(), as_string(type));
+
+        ref = 0;
+
+        if (flags.std_sort) {
+            measure("std::sort", std_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("std::qsort", std_qsort_wrapper<NumericType>);
+        }
+
+        if (flags.std_stable_sort) {
+            measure("std::stable_sort", std_stable_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("quick sort", quicksort<NumericType>);
+        }
+
+        // AVX2 sortiranje s obzirom na tip
+
+        if (flags.avx2) {
+            measure("AVX2 quick sort for float", qs::avx2::quicksort_ps);
+        }
+    }
+
+    template<> void run<double>() {
+
+        printf("<------------------------------------------->");
+        printf("items count: %lu (%lu bytes), input %s\n", data->count(), data->size(), as_string(type));
+
+        ref = 0;
+
+        if (flags.std_sort) {
+            measure("std::sort", std_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("std::qsort", std_qsort_wrapper<NumericType>);
+        }
+
+        if (flags.std_stable_sort) {
+            measure("std::stable_sort", std_stable_sort_wrapper<NumericType>);
+        }
+
+        if (flags.std_qsort) {
+            measure("quick sort", quicksort<NumericType>);
+        }
+
+        // AVX2 sortiranje s obzirom na tip
+
+        if (flags.avx2) {
+            measure("AVX2 quick sort for double", qs::avx2::quicksort_pd);
+        }
+    }
+*/
 
 private:
     template <typename SORT_FUNCTION>
@@ -310,17 +463,19 @@ private:
 
     void checkType() {
         // suzu sam pustio
-        if (std::is_same<NumericType, uint8_t>::value || std::is_same<NumericType, char>::value) {
+        std::string ime_tipa = typeid(NumericType).name();
+        if (ime_tipa.compare("h") == 0) {
             measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
-        } else if (std::is_same<NumericType, uint16_t>::same || std::is_same<NumericType, short>::value)
+            return;
+        } else if (ime_tipa.compare("t") == 0)
             measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
-        else if (std::is_same<NumericType, uint32_t>::value || std::is_same<NumericType, int>::value)
+        else if (ime_tipa.compare("j") == 0)
             measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
-        else if (std::is_same<NumericType, uint64_t>::value || std::is_same<NumericType, long>::value)
+        else if (ime_tipa.compare("m") == 0)
             measure("AVX2 quick sort for 64-bit integer", qs::avx2::quicksort_64);
-        else if (std::is_same<NumericType, float>::value)
+        else if (ime_tipa.compare("f") == 0)
             measure("AVX2 quick sort for float", qs::avx2::quicksort_ps);
-        else if (std::is_same<NumericType, double>::value)
+        else if (ime_tipa.compare("d") == 0)
             measure("AVX2 quick sort for double", qs::avx2::quicksort_pd);
         else
             printf("Not a numeric type!");
