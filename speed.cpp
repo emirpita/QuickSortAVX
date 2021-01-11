@@ -19,19 +19,19 @@
 #   include "gettime.cpp"
 #endif
 
+template<typename NumericType>
 class PerformanceTest final {
 
-    int         iterations;
-    InputData&  input;
-    uint32_t*   tmp;
+    int iterations;
+    InputData<NumericType> &input;
+    NumericType *tmp;
 
 public:
-    PerformanceTest(int n, InputData& input)
-        : iterations(n)
-        , input(input) {
+    PerformanceTest(int n, InputData<NumericType> &input)
+            : iterations(n), input(input) {
 
         assert(iterations > 0);
-        tmp = new uint32_t[input.count()];
+        tmp = new NumericType[input.count()];
     }
 
     ~PerformanceTest() {
@@ -50,7 +50,7 @@ public:
 
             uint64_t t1, t2;
 
- #ifdef USE_RDTSC
+#ifdef USE_RDTSC
             RDTSC_START(t1);
 #else
             t1 = get_time();
@@ -108,27 +108,27 @@ const char* as_string(InputType type) {
     }
 }
 
-void std_qsort_wrapper(uint32_t* array, int left, int right) {
+template<typename NumericType>
+void std_qsort_wrapper(NumericType *array, int left, int right) {
 
-    std::qsort(array + left, right - left + 1, sizeof(uint32_t),  [](const void* a, const void* b)
-    {
-        uint32_t a1 = *static_cast<const uint32_t*>(a);
-        uint32_t a2 = *static_cast<const uint32_t*>(b);
+    std::qsort(array + left, right - left + 1, sizeof(NumericType), [](const void *a, const void *b) {
+        NumericType a1 = *static_cast<const NumericType *>(a);
+        NumericType a2 = *static_cast<const NumericType *>(b);
 
-        if(a1 < a2) return -1;
-        if(a1 > a2) return 1;
+        if (a1 < a2) return -1;
+        if (a1 > a2) return 1;
         return 0;
     });
 }
 
-
-void std_stable_sort_wrapper(uint32_t* array, int left, int right) {
+template<typename NumericType>
+void std_stable_sort_wrapper(NumericType *array, int left, int right) {
 
     std::stable_sort(array + left, array + right + 1);
 }
 
-
-void std_sort_wrapper(uint32_t* array, int left, int right) {
+template<typename NumericType>
+void std_sort_wrapper(NumericType *array, int left, int right) {
 
     std::sort(array + left, array + right + 1);
 }
@@ -187,15 +187,15 @@ class Flags {
         }
 };
 
-
+template<typename NumericType>
 class Test {
 
-    std::unique_ptr<InputData> data;
-    InputType   type;
-    size_t      count;
-    int         iterations;
-    Flags       flags;
-    uint64_t    ref;
+    std::unique_ptr<InputData<NumericType>> data;
+    InputType type;
+    size_t count;
+    int iterations;
+    Flags flags;
+    uint64_t ref;
 
 public:
     Test(InputType type, size_t count, int iterations, Flags&& flags)
@@ -206,29 +206,31 @@ public:
 
         switch (type) {
             case InputType::randomfew:
-                data.reset(new InputRandomFew(count));
+                data.reset(new InputRandomFew<NumericType>(count));
                 break;
 
             case InputType::randomuniq:
-                data.reset(new InputRandomUnique(count));
+                data.reset(new InputRandomUnique<NumericType>(count));
                 break;
 
             case InputType::random:
-                data.reset(new InputRandom(count));
+                data.reset(new InputRandom<NumericType>(count));
                 break;
 
             case InputType::ascending:
-                data.reset(new InputAscending(count));
+                data.reset(new InputAscending<NumericType>(count));
                 break;
 
             case InputType::descending:
-                data.reset(new InputDescending(count));
+                data.reset(new InputDescending<NumericType>(count));
                 break;
         }
     }
 
     void run() {
 
+        printf("<------------------------------------------->");
+        printf("Test for type: %s", NumericType.name()); // valjda radi
         printf("items count: %lu (%lu bytes), input %s\n", data->count(), data->size(), as_string(type));
 
         ref = 0;
@@ -249,26 +251,11 @@ public:
             measure("quick sort", quicksort);
         }
 
-        if (flags.avx2) {
-            measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
-        }
+        // AVX2 sortiranje s obzirom na tip
 
         if (flags.avx2) {
-            measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
+            checkType();
         }
-        if (flags.avx2) {
-            measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
-        }
-        if (flags.avx2) {
-            measure("AVX2 quick sort for 64-bit integer", qs::avx2::quicksort_64);
-        }
-        if (flags.avx2) {
-            measure("AVX2 quick sort for float", qs::avx2::quicksort_ps);
-        }
-        if (flags.avx2) {
-            measure("AVX2 quick sort for double", qs::avx2::quicksort_pd);
-        }
-
     }
 
 private:
@@ -312,7 +299,7 @@ private:
 #else
         printf("%0.4f s", time/1000000.0);
         if (ref > 0) {
-            printf(" (%0.2f)\n", ref/double(time));
+            printf(" (%0.2f)\n", ref / double(time));
         }
 #endif
         putchar('\n');
@@ -320,6 +307,24 @@ private:
         if (ref == 0) {
             ref = time;
         }
+    }
+
+    void checkType() {
+        // suzu sam pustio
+        if (std::is_same<NumericType, uint8_t>::value || std::is_same<NumericType, char>::value)
+            measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
+        else if (std::is_same<NumericType, uint16_t>::same || std::is_same<NumericType, short>::value)
+            measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
+        else if (std::is_same<NumericType, uint32_t>::value || std::is_same<NumericType, int>::value)
+            measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
+        else if (std::is_same<NumericType, uint64_t>::value || std::is_same<NumericType, long>::value)
+            measure("AVX2 quick sort for 64-bit integer", qs::avx2::quicksort_64);
+        else if (std::is_same<NumericType, float>::value)
+            measure("AVX2 quick sort for float", qs::avx2::quicksort_ps);
+        else if (std::is_same<NumericType, double>::value)
+            measure("AVX2 quick sort for double", qs::avx2::quicksort_pd);
+        else
+            printf("Not a numeric type!");
     }
 };
 
