@@ -1,20 +1,20 @@
 #include "partition.cpp"
 
-//dodati sa template typename za razlicite ove tipove
-void quicksort(uint32_t* array, int left, int right) {
+template<typename NumericType>
+void quicksort(NumericType *array, int left, int right) {
 
     int i = left;
     int j = right;
 
-    const uint32_t pivot = array[(i + j)/2];
+    const NumericType pivot = array[(i + j) / 2];
 
-    scalar_partition_epi32(array, pivot, i, j);
+    scalar_partition<NumericType>(array, pivot, i, j);
 
     if (left < j) {
-        quicksort(array, left, j);
+        quicksort<NumericType>(array, left, j);
     }
 
     if (i < right) {
-        quicksort(array, i, right);
+        quicksort<NumericType>(array, i, right);
     }
 }
