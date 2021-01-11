@@ -9,10 +9,10 @@
 #include "input_data.cpp"
 #include "quicksort-all.cpp"
 
-
-bool is_sorted(uint32_t* array, size_t n) {
+template<typename NumericType>
+bool is_sorted(NumericType *array, size_t n) {
     assert(n > 0);
-    for (size_t i=1; i < n; i++) {
+    for (size_t i = 1; i < n; i++) {
         if (array[i - 1] > array[i]) {
             printf("mismatch at %lu\n", i);
             return false;
@@ -25,7 +25,7 @@ bool is_sorted(uint32_t* array, size_t n) {
 
 const size_t AVX2_REGISTER_SIZE = 16;
 
-
+template<typename NumericType>
 class Test {
 
     bool verbose;
@@ -33,9 +33,9 @@ class Test {
 public:
     Test(bool v = true) : verbose(v) {}
 
-    template <typename SORT_FN>
+    template<typename SORT_FN>
     bool run(SORT_FN sort) {
-        const size_t start = 2*AVX2_REGISTER_SIZE;
+        const size_t start = 2 * AVX2_REGISTER_SIZE;
         const size_t end   = 256*AVX2_REGISTER_SIZE;
 
         if (verbose) {
@@ -49,10 +49,10 @@ public:
                 fflush(stdout);
             }
 
-            InputAscending  asc(size);
-            InputDescending dsc(size);
-            InputRandom     rnd(size);
-            InputRandomFew  rndfew(size);
+            InputAscending<NumericType> asc(size);
+            InputDescending<NumericType> dsc(size);
+            InputRandom<NumericType> rnd(size);
+            InputRandomFew<NumericType> rndfew(size);
 
             if (!test(sort, asc)) {
                 printf("failed for size %lu, intput ascending\n", size);
@@ -84,11 +84,11 @@ public:
 
 
 private:
-    template <typename SORT_FN>
-    bool test(SORT_FN sort, InputData& data) {
+    template<typename SORT_FN>
+    bool test(SORT_FN sort, InputData<NumericType> &data) {
         sort(data.pointer(), 0, data.count() - 1);
 
-        return is_sorted(data.pointer(), data.count());
+        return is_sorted<NumericType>(data.pointer(), data.count());
     }
 };
 
@@ -130,22 +130,18 @@ int main(int argc, char* argv[]) {
     bool verbose = cmd.has("-v") || cmd.has("--verbose");
     Flags flags(cmd);
 
-    Test test(verbose);
+    // samo da probamo za int
+    Test<uint32_t> test(verbose);
     int ret = EXIT_SUCCESS;
 
 
-
-    printf("AVX2 base version... "); fflush(stdout);
+    printf("AVX2 base version... ");
+    fflush(stdout);
     if (test.run(qs::avx2::quicksort)) {
         puts("OK");
     } else {
         puts("FAILED");
         ret = EXIT_FAILURE;
     }
-
-
-
-
-
     return ret;
 }
