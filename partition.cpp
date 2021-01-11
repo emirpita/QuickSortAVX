@@ -22,6 +22,8 @@ void scalar_partition(NumericType *array, const NumericType pivot, int &left, in
     }
 }
 
+// <------------------- Konkretne instancirane verzije ------------------>
+
 void scalar_partition_epi32(uint32_t *array, const uint32_t pivot, int &left, int &right) {
 
     while (left <= right) {
