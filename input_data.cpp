@@ -1,15 +1,16 @@
+template<typename NumericType>
 class InputData {
-    
+
 protected:
-    uint32_t*   array;
-    size_t      n;
+    NumericType *array;
+    size_t n;
 
 public:
     InputData(size_t count)
-        : n(count) {
+            : n(count) {
 
         assert(n > 0);
-        array = new uint32_t[n];
+        array = new NumericType[n];
     }
 
     ~InputData() {
@@ -17,7 +18,7 @@ public:
     }
 
 public:
-    uint32_t* pointer() {
+    NumericType *pointer() {
         return array;
     }
 
@@ -26,68 +27,71 @@ public:
     }
 
     size_t size() const {
-        return n * sizeof(uint32_t);
+        return n * sizeof(NumericType);
     }
 };
 
+template<typename NumericType>
+class InputAscending : public InputData<NumericType> {
 
-class InputAscending: public InputData {
-
-    using super = InputData;
+    using super = InputData<NumericType>;
 
 public:
     InputAscending(size_t count) : super(count) {
-        for (size_t i=0; i < n; i++) {
-            array[i] = i;
+        for (size_t i = 0; i < InputData<NumericType>::n; i++) {
+            InputData<NumericType>::array[i] = NumericType(i);
         }
     }
 };
 
+template<typename NumericType>
+class InputDescending : public InputData<NumericType> {
 
-class InputDescending: public InputData {
-
-    using super = InputData;
+    using super = InputData<NumericType>;
 
 public:
     InputDescending(size_t count) : super(count) {
-        for (size_t i=0; i < n; i++) {
-            array[i] = n - i + 1;
+        for (size_t i = 0; i < InputData<NumericType>::n; i++) {
+            InputData<NumericType>::array[i] = NumericType(InputData<NumericType>::n - i + 1);
         }
     }
 };
 
-class InputRandomFew: public InputData {
+template<typename NumericType>
+class InputRandomFew : public InputData<NumericType> {
 
-    using super = InputData;
+    using super = InputData<NumericType>;
 
 public:
     InputRandomFew(size_t count) : super(count) {
-        for (size_t i=0; i < n; i++) {
-            array[i] = rand() % 10;
+        for (size_t i = 0; i < InputData<NumericType>::n; i++) {
+            InputData<NumericType>::array[i] = NumericType(rand() % 10);
         }
     }
 };
 
-class InputRandom: public InputData {
+template<typename NumericType>
+class InputRandom : public InputData<NumericType> {
 
-    using super = InputData;
+    using super = InputData<NumericType>;
 
 public:
     InputRandom(size_t count) : super(count) {
-        for (size_t i=0; i < n; i++) {
-            array[i] = rand();
+        for (size_t i = 0; i < InputData<NumericType>::n; i++) {
+            InputData<NumericType>::array[i] = NumericType(rand());
         }
     }
 };
 
-class InputRandomUnique: public InputData {
+template<typename NumericType>
+class InputRandomUnique : public InputData<NumericType> {
 
-    using super = InputData;
+    using super = InputData<NumericType>;
 
 public:
     InputRandomUnique(size_t count) : super(count) {
-        for (size_t i=0; i < n; i++) {
-            array[i] = i;
+        for (size_t i = 0; i < InputData<NumericType>::n; i++) {
+            InputData<NumericType>::array[i] = NumericType(i);
         }
 
         shuffle();
@@ -95,12 +99,12 @@ public:
 
 private:
     void shuffle() {
-        for (size_t i=0; i < n; i++) {
-            size_t j = rand() % (n - i);
+        for (size_t i = 0; i < InputData<NumericType>::n; i++) {
+            size_t j = rand() % (InputData<NumericType>::n - i);
 
-            const uint32_t t = array[i];
-            array[i] = array[j];
-            array[j] = t;
+            const NumericType t = InputData<NumericType>::array[i];
+            InputData<NumericType>::array[i] = InputData<NumericType>::array[j];
+            InputData<NumericType>::array[j] = t;
         }
     }
 };
