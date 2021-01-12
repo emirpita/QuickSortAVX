@@ -8,11 +8,7 @@ protected:
     size_t n;
 
 public:
-    InputData(size_t count) {
-        if (n >= std::numeric_limits<NumericType>::max())
-            n = std::numeric_limits<NumericType>::max() - 1;
-        else
-            n = count;
+    InputData(size_t count) : n(count) {
         assert(n > 0);
         array = new NumericType[n];
     }

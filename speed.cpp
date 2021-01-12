@@ -559,17 +559,39 @@ int main(int argc, char* argv[]) {
     // samo pozivanje speed-a ce raditi za sve tipove, kao sto je ovdje napisano
     // samo ce se moci unositi ovi razliciti parametri
     // morao sam hadrkodirati
-    Test<uint8_t> test8b(type, count, iterations, std::move(flags));
-    runUint8_t(test8b);
-    Test<uint16_t> test16b(type, count, iterations, std::move(flags));
-    runUint16_t(test16b);
-    Test<uint32_t> test32b(type, count, iterations, std::move(flags));
-    runUint32_t(test32b);
-    Test<uint64_t> test64b(type, count, iterations, std::move(flags));
-    runUint64_t(test64b);
-    Test<float> testFloat(type, count, iterations, std::move(flags));
-    runFloat(testFloat);
-    Test<double> testDouble(type, count, iterations, std::move(flags));
-    runDouble(testDouble);
+    if (count <= std::numeric_limits<uint8_t>::max()) {
+        Test<uint8_t> test8b(type, count, iterations, std::move(flags));
+        runUint8_t(test8b);
+    } else
+        printf("Prekoracen limit za 8b int\n");
+
+    if (count <= std::numeric_limits<uint16_t>::max()) {
+        Test<uint16_t> test16b(type, count, iterations, std::move(flags));
+        runUint16_t(test16b);
+    } else
+        printf("Prekoracen limit za 16b int\n");
+
+    if (count <= std::numeric_limits<uint32_t>::max()) {
+        Test<uint32_t> test32b(type, count, iterations, std::move(flags));
+        runUint32_t(test32b);
+    } else
+        printf("Prekoracen limit za 32b int\n");
+
+    if (count <= std::numeric_limits<uint64_t>::max()) {
+        Test<uint64_t> test64b(type, count, iterations, std::move(flags));
+        runUint64_t(test64b);
+    } else
+        printf("Prekoracen limit za 64b int\n");
+
+    if (count <= std::numeric_limits<float>::max()) {
+        Test<float> testFloat(type, count, iterations, std::move(flags));
+        runFloat(testFloat);
+    } else
+        printf("Prekoracen limit za float\n");
+    if (count <= std::numeric_limits<double>::max()) {
+        Test<double> testDouble(type, count, iterations, std::move(flags));
+        runDouble(testDouble);
+    } else
+        printf("Prekoracen limit za double\n");
     return EXIT_SUCCESS;
 }
