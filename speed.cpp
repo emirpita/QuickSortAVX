@@ -320,7 +320,7 @@ private:
             ref = time;
         }
     }
-};
+}; // Test class template
 
 void runUint8_t(Test<uint8_t> &test) {
 
