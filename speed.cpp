@@ -400,23 +400,23 @@ void runUint8_t(Test<uint8_t> test) {
 
     test.ref = 0;
 
-    if (flags.std_sort) {
+    if (test.flags.std_sort) {
         test.measure("std::sort", std_sort_wrapper<uint8_t>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("std::qsort", std_qsort_wrapper<uint8_t>);
     }
 
-    if (flags.std_stable_sort) {
+    if (test.flags.std_stable_sort) {
         test.measure("std::stable_sort", std_stable_sort_wrapper<uint8_t>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("quick sort", quicksort<uint8_t>);
     }
 
-    if (flags.avx2) {
+    if (test.flags.avx2) {
         test.measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_8);
     }
 }
@@ -428,23 +428,23 @@ void runUint16_t(Test<uint_16_t> test) {
 
     test.ref = 0;
 
-    if (flags.std_sort) {
+    if (test.flags.std_sort) {
         test.measure("std::sort", std_sort_wrapper<uint16_t>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("std::qsort", std_qsort_wrapper<uint16_t>);
     }
 
-    if (flags.std_stable_sort) {
+    if (test.flags.std_stable_sort) {
         test.measure("std::stable_sort", std_stable_sort_wrapper<uint16_t>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("quick sort", quicksort<uint16_t>);
     }
 
-    if (flags.avx2) {
+    if (test.flags.avx2) {
         test.measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
     }
 }
@@ -456,25 +456,25 @@ void runUint32_t(Test<uint32_t> test) {
 
     test.ref = 0;
 
-    if (flags.std_sort) {
+    if (test.flags.std_sort) {
         test.measure("std::sort", std_sort_wrapper<uint32_t>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("std::qsort", std_qsort_wrapper<uint32_t>);
     }
 
-    if (flags.std_stable_sort) {
+    if (test.flags.std_stable_sort) {
         test.measure("std::stable_sort", std_stable_sort_wrapper<uint32_t>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("quick sort", quicksort<uint32_t>);
     }
 
     // AVX2 sortiranje s obzirom na tip
 
-    if (flags.avx2) {
+    if (test.flags.avx2) {
         test.measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
     }
 }
@@ -486,25 +486,25 @@ void runUint64_t(Test<uint64_t> test) {
 
     test.ref = 0;
 
-    if (flags.std_sort) {
+    if (test.flags.std_sort) {
         test.measure("std::sort", std_sort_wrapper<uint64_t>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("std::qsort", std_qsort_wrapper<uint64_t>);
     }
 
-    if (flags.std_stable_sort) {
+    if (test.flags.std_stable_sort) {
         test.measure("std::stable_sort", std_stable_sort_wrapper<uint64_t>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("quick sort", quicksort<uint64_t>);
     }
 
     // AVX2 sortiranje s obzirom na tip
 
-    if (flags.avx2) {
+    if (test.flags.avx2) {
         test.measure("AVX2 quick sort for 64-bit integer", qs::avx2::quicksort_64);
     }
 }
@@ -516,25 +516,25 @@ void runFloat(Test<float> test) {
 
     test.ref = 0;
 
-    if (flags.std_sort) {
+    if (test.flags.std_sort) {
         test.measure("std::sort", std_sort_wrapper<float>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("std::qsort", std_qsort_wrapper<float>);
     }
 
-    if (flags.std_stable_sort) {
+    if (test.flags.std_stable_sort) {
         test.measure("std::stable_sort", std_stable_sort_wrapper<float>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("quick sort", quicksort<float>);
     }
 
     // AVX2 sortiranje s obzirom na tip
 
-    if (flags.avx2) {
+    if (test.flags.avx2) {
         test.measure("AVX2 quick sort for float", qs::avx2::quicksort_ps);
     }
 }
@@ -546,25 +546,25 @@ void runDouble(Test<double> test) {
 
     test.ref = 0;
 
-    if (flags.std_sort) {
+    if (test.flags.std_sort) {
         test.measure("std::sort", std_sort_wrapper<double>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("std::qsort", std_qsort_wrapper<double>);
     }
 
-    if (flags.std_stable_sort) {
+    if (test.flags.std_stable_sort) {
         test.measure("std::stable_sort", std_stable_sort_wrapper<double>);
     }
 
-    if (flags.std_qsort) {
+    if (test.flags.std_qsort) {
         test.measure("quick sort", quicksort<double>);
     }
 
     // AVX2 sortiranje s obzirom na tip
 
-    if (flags.avx2) {
+    if (test.flags.avx2) {
         test.measure("AVX2 quick sort for double", qs::avx2::quicksort_pd);
     }
 }
