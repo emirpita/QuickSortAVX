@@ -252,10 +252,7 @@ public:
             measure("quick sort", quicksort<NumericType>);
         }
 
-        // AVX2 sortiranje s obzirom na tip
-
         if (flags.avx2) {
-            //checkType();
         }
     }
 
@@ -322,74 +319,6 @@ private:
         if (ref == 0) {
             ref = time;
         }
-    }
-
-    int imeTipaUInt(std::string imeTipa) {
-        int var;
-        if(imeTipa.compare("h")==0) {
-            var = 1;
-        }else if(imeTipa.compare("t")==0) {
-            var = 2;
-        }else if(imeTipa.compare("j")==0) {
-            var = 3;
-        }else if(imeTipa.compare("m")==0) {
-            var = 4;
-        }else if(imeTipa.compare("f")==0) {
-            var = 5;
-        }else if(imeTipa.compare("d")==0) {
-            var = 6;
-        }
-        return var;
-    }
-    void checkType() {
-        // suzu sam pustio
-        std::string ime_tipa = typeid(NumericType).name();
-        int imeTipaInt = imeTipaUInt(ime_tipa);
-        switch(imeTipaInt) {
-            case 1:
-                //data = static_cast<std::unique_ptr<InputData<uint8_t>>> (data);
-                measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
-                break;
-            case 2:
-                //data = static_cast<std::unique_ptr<InputData<uint16_t>>> (data);
-                measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
-                break;
-            case 3:
-                //data = static_cast<std::unique_ptr<InputData<uint32_t>>> (data);
-                measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
-                break;
-            case 4:
-                //data = static_cast<std::unique_ptr<InputData<uint64_t>>> (data);
-                measure("AVX2 quick sort for 64-bit integer", qs::avx2::quicksort_64);
-                break;
-            case 5:
-                //data = static_cast<std::unique_ptr<InputData<float>>> (data);
-                measure("AVX2 quick sort for float", qs::avx2::quicksort_ps);
-                break;
-            case 6:
-                //data = static_cast<std::unique_ptr<InputData<double>>> (data);
-                measure("AVX2 quick sort for double", qs::avx2::quicksort_pd);
-                break;
-            default:
-                printf("Nije broj!");
-                break;
-        }
-        /*
-        if (ime_tipa.compare("h") == 0) {
-            measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
-        } else if (ime_tipa.compare("t") == 0)
-            measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
-        else if (ime_tipa.compare("j") == 0)
-            measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
-        else if (ime_tipa.compare("m") == 0)
-            measure("AVX2 quick sort for 64-bit integer", qs::avx2::quicksort_64);
-        else if (ime_tipa.compare("f") == 0)
-            measure("AVX2 quick sort for float", qs::avx2::quicksort_ps);
-        else if (ime_tipa.compare("d") == 0)
-            measure("AVX2 quick sort for double", qs::avx2::quicksort_pd);
-        else
-            printf("Not a numeric type!");
-            */
     }
 };
 
@@ -541,7 +470,7 @@ void runFloat(Test<float> &test) {
 
 void runDouble(Test<double> &test) {
 
-    printf("<------------------------------------------->");
+    printf("\n<--------------------------------------------------->\n");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
 
     test.ref = 0;
