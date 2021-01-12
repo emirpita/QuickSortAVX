@@ -259,17 +259,17 @@ public:
         }
     }
 
-    friend void runUint8_t(Test<uint8_t> test);
+    friend void runUint8_t(Test<uint8_t> &test);
 
-    friend void runUint16_t(Test<uint16_t> test);
+    friend void runUint16_t(Test<uint16_t> &test);
 
-    friend void runUint32_t(Test<uint32_t> test);
+    friend void runUint32_t(Test<uint32_t> &test);
 
-    friend void runUint64_t(Test<uint64_t> test);
+    friend void runUint64_t(Test<uint64_t> &test);
 
-    friend void runFloat(Test<float> test);
+    friend void runFloat(Test<float> &test);
 
-    friend void runDouble(Test<double> test);
+    friend void runDouble(Test<double> &test);
 
 
 private:
@@ -393,7 +393,7 @@ private:
     }
 };
 
-void runUint8_t(Test<uint8_t> test) {
+void runUint8_t(Test<uint8_t> &test) {
 
     printf("<------------------------------------------->");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
@@ -417,11 +417,11 @@ void runUint8_t(Test<uint8_t> test) {
     }
 
     if (test.flags.avx2) {
-        test.measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_8);
+        test.measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
     }
 }
 
-void runUint16_t(Test<uint_16_t> test) {
+void runUint16_t(Test<uint16_t> &test) {
 
     printf("<------------------------------------------->");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
@@ -449,7 +449,7 @@ void runUint16_t(Test<uint_16_t> test) {
     }
 }
 
-void runUint32_t(Test<uint32_t> test) {
+void runUint32_t(Test<uint32_t> &test) {
 
     printf("<------------------------------------------->");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
@@ -479,7 +479,7 @@ void runUint32_t(Test<uint32_t> test) {
     }
 }
 
-void runUint64_t(Test<uint64_t> test) {
+void runUint64_t(Test<uint64_t> &test) {
 
     printf("<------------------------------------------->");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
@@ -509,7 +509,7 @@ void runUint64_t(Test<uint64_t> test) {
     }
 }
 
-void runFloat(Test<float> test) {
+void runFloat(Test<float> &test) {
 
     printf("<------------------------------------------->");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
@@ -539,7 +539,7 @@ void runFloat(Test<float> test) {
     }
 }
 
-void runDouble(Test<double> test) {
+void runDouble(Test<double> &test) {
 
     printf("<------------------------------------------->");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
