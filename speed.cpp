@@ -324,7 +324,7 @@ private:
 
 void runUint8_t(Test<uint8_t> &test) {
 
-    printf("<------------------------------------------->");
+    printf("\n<------------------------------------------->\n");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
 
     test.ref = 0;
@@ -352,7 +352,7 @@ void runUint8_t(Test<uint8_t> &test) {
 
 void runUint16_t(Test<uint16_t> &test) {
 
-    printf("<------------------------------------------->");
+    printf("\n<------------------------------------------->\n");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
 
     test.ref = 0;
@@ -380,7 +380,7 @@ void runUint16_t(Test<uint16_t> &test) {
 
 void runUint32_t(Test<uint32_t> &test) {
 
-    printf("<------------------------------------------->");
+    printf("\n<------------------------------------------->\n");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
 
     test.ref = 0;
@@ -410,7 +410,7 @@ void runUint32_t(Test<uint32_t> &test) {
 
 void runUint64_t(Test<uint64_t> &test) {
 
-    printf("<------------------------------------------->");
+    printf("\n<------------------------------------------->\n");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
 
     test.ref = 0;
@@ -440,7 +440,7 @@ void runUint64_t(Test<uint64_t> &test) {
 
 void runFloat(Test<float> &test) {
 
-    printf("<------------------------------------------->");
+    printf("\n<------------------------------------------->\n");
     printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
 
     test.ref = 0;
