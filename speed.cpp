@@ -559,25 +559,22 @@ int main(int argc, char* argv[]) {
     // samo pozivanje speed-a ce raditi za sve tipove, kao sto je ovdje napisano
     // samo ce se moci unositi ovi razliciti parametri
     // morao sam hadrkodirati
-        Test<uint8_t> test8b(type, count, iterations, std::move(flags));
-        runUint8_t(test8b);
+    Test<uint8_t> test8b(type, count, iterations, std::move(flags));
+    runUint8_t(test8b);
 
-        Test<uint16_t> test16b(type, count, iterations, std::move(flags));
-        runUint16_t(test16b);
-
+    Test<uint16_t> test16b(type, count, iterations, std::move(flags));
+    runUint16_t(test16b);
 
     Test<uint32_t> test32b(type, count, iterations, std::move(flags));
-        runUint32_t(test32b);
-
+    runUint32_t(test32b);
 
     Test<uint64_t> test64b(type, count, iterations, std::move(flags));
-        runUint64_t(test64b);
-
+    runUint64_t(test64b);
 
     Test<float> testFloat(type, count, iterations, std::move(flags));
-        runFloat(testFloat);
+    runFloat(testFloat);
 
     Test<double> testDouble(type, count, iterations, std::move(flags));
-        runDouble(testDouble);
+    runDouble(testDouble);
     return EXIT_SUCCESS;
 }
