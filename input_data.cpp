@@ -39,7 +39,7 @@ class InputAscending : public InputData<NumericType> {
 public:
     InputAscending(size_t count) : super(count) {
         for (size_t i = 0; i < InputData<NumericType>::n; i++) {
-            InputData<NumericType>::array[i] = NumericType(i);
+            InputData<NumericType>::array[i] = NumericType(i % std::numeric_limits<NumericType>::max());
         }
     }
 };
@@ -52,7 +52,8 @@ class InputDescending : public InputData<NumericType> {
 public:
     InputDescending(size_t count) : super(count) {
         for (size_t i = 0; i < InputData<NumericType>::n; i++) {
-            InputData<NumericType>::array[i] = NumericType(InputData<NumericType>::n - i + 1);
+            InputData<NumericType>::array[i] = NumericType(
+                    (InputData<NumericType>::n - i + 1) % std::numeric_limits<NumericType>::max());
         }
     }
 };
@@ -65,7 +66,7 @@ class InputRandomFew : public InputData<NumericType> {
 public:
     InputRandomFew(size_t count) : super(count) {
         for (size_t i = 0; i < InputData<NumericType>::n; i++) {
-            InputData<NumericType>::array[i] = NumericType(rand() % 10);
+            InputData<NumericType>::array[i] = NumericType((rand() % 10) % std::numeric_limits<NumericType>::max());
         }
     }
 };
@@ -78,7 +79,7 @@ class InputRandom : public InputData<NumericType> {
 public:
     InputRandom(size_t count) : super(count) {
         for (size_t i = 0; i < InputData<NumericType>::n; i++) {
-            InputData<NumericType>::array[i] = NumericType(rand());
+            InputData<NumericType>::array[i] = NumericType((rand()) % std::numeric_limits<NumericType>::max());
         }
     }
 };
@@ -91,7 +92,7 @@ class InputRandomUnique : public InputData<NumericType> {
 public:
     InputRandomUnique(size_t count) : super(count) {
         for (size_t i = 0; i < InputData<NumericType>::n; i++) {
-            InputData<NumericType>::array[i] = NumericType(i);
+            InputData<NumericType>::array[i] = NumericType(i % std::numeric_limits<NumericType>::max());
         }
 
         shuffle();
