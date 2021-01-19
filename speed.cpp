@@ -323,61 +323,6 @@ private:
     }
 }; // Test class template
 
-void runUint8_t(Test<uint8_t> &test) {
-
-    printf("\n<------------------------------------------->\n");
-    printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
-
-    test.ref = 0;
-
-    if (test.flags.std_sort) {
-        test.measure("std::sort", std_sort_wrapper<uint8_t>);
-    }
-
-    if (test.flags.std_qsort) {
-        test.measure("std::qsort", std_qsort_wrapper<uint8_t>);
-    }
-
-    if (test.flags.std_stable_sort) {
-        test.measure("std::stable_sort", std_stable_sort_wrapper<uint8_t>);
-    }
-
-    if (test.flags.std_qsort) {
-        test.measure("quick sort", quicksort<uint8_t>);
-    }
-
-    if (test.flags.avx2) {
-        test.measure("AVX2 quick sort for 8-bit integer", qs::avx2::quicksort_8);
-    }
-}
-
-void runUint16_t(Test<uint16_t> &test) {
-
-    printf("\n<------------------------------------------->\n");
-    printf("items count: %lu (%lu bytes), input %s\n", test.data->count(), test.data->size(), as_string(test.type));
-
-    test.ref = 0;
-
-    if (test.flags.std_sort) {
-        test.measure("std::sort", std_sort_wrapper<uint16_t>);
-    }
-
-    if (test.flags.std_qsort) {
-        test.measure("std::qsort", std_qsort_wrapper<uint16_t>);
-    }
-
-    if (test.flags.std_stable_sort) {
-        test.measure("std::stable_sort", std_stable_sort_wrapper<uint16_t>);
-    }
-
-    if (test.flags.std_qsort) {
-        test.measure("quick sort", quicksort<uint16_t>);
-    }
-
-    if (test.flags.avx2) {
-        test.measure("AVX2 quick sort for 16-bit integer", qs::avx2::quicksort_16);
-    }
-}
 
 void runUint32_t(Test<uint32_t> &test) {
 
