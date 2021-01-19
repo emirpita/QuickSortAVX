@@ -548,7 +548,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 #undef is_keyword
-*/
+
 
 #ifdef USE_RDTSC
     RDTSC_SET_OVERHEAD(rdtsc_overhead_func(1), iterations);
