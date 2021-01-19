@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
 
     printf("AVX2 base version... ");
     fflush(stdout);
-    if (test.run(qs::avx2::quicksort)) {
+    if (test.run(qs::avx2::quicksort_32)) {
         puts("OK");
     } else {
         puts("FAILED");

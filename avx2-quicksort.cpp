@@ -4,7 +4,7 @@ namespace qs {
 
     namespace avx2 {
 
-        void quicksort(uint32_t* array, int left, int right) {
+        void quicksort_32(uint32_t* array, int left, int right) {
 
             int i = left;
             int j = right;
@@ -19,14 +19,18 @@ namespace qs {
             }
 
             if (left < j) {
-                quicksort(array, left, j);
+                quicksort_32(array, left, j);
             }
 
             if (i < right) {
-                quicksort(array, i, right);
+                quicksort_32(array, i, right);
             }
-        }
 
+        }
+        int compare (const void * a, const void * b)
+        {
+            return ( *(float*)a - *(float*)b );
+        }
         void quicksort_ps(float* array, int left, int right) {
 
             int i = left;
@@ -48,6 +52,8 @@ namespace qs {
             if (i < right) {
                 quicksort_ps(array, i, right);
             }
+            //std::qsort(array, right+1, sizeof(float), compare);
+
         }
 
         //za 16-bitne
@@ -72,6 +78,7 @@ namespace qs {
             if (i < right) {
                 quicksort_16(array, i, right);
             }
+
         }
         void quicksort_64( uint64_t *array, int left, int right) {
 
@@ -94,6 +101,7 @@ namespace qs {
             if (i < right) {
                 quicksort_64(array, i, right);
             }
+
         }
 
         void quicksort_8( uint8_t *array, int left, int right) {
@@ -117,6 +125,7 @@ namespace qs {
             if (i < right) {
                 quicksort_8(array, i, right);
             }
+
         }
         void quicksort_pd(double *array, int left, int right) {
 
@@ -139,6 +148,7 @@ namespace qs {
             if (i < right) {
                 quicksort_pd(array, i, right);
             }
+
         }
     } // namespace avx2
 

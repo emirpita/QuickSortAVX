@@ -58,6 +58,7 @@ public:
             t1 = get_time();
 #endif
             sort(input.pointer(), 0, input.count() - 1);
+            quicksort(input.pointer(), 0, input.count() - 1);
 
 #ifdef USE_RDTSC
             RDTSC_START(t2);
@@ -165,7 +166,7 @@ class Flags {
                 any_set = true;
             }
 
-            if (cmd.has("-quicksort")) {
+            if (cmd.has("-quicksort_32")) {
                 quicksort = true;
                 any_set = true;
             }
@@ -404,7 +405,7 @@ void runUint32_t(Test<uint32_t> &test) {
     // AVX2 sortiranje s obzirom na tip
 
     if (test.flags.avx2) {
-        test.measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort);
+        test.measure("AVX2 quick sort for 32-bit integer", qs::avx2::quicksort_32);
     }
 }
 
@@ -547,7 +548,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 #undef is_keyword
-
+*/
 
 #ifdef USE_RDTSC
     RDTSC_SET_OVERHEAD(rdtsc_overhead_func(1), iterations);
@@ -559,11 +560,11 @@ int main(int argc, char* argv[]) {
     // samo pozivanje speed-a ce raditi za sve tipove, kao sto je ovdje napisano
     // samo ce se moci unositi ovi razliciti parametri
     // morao sam hadrkodirati
-        Test<uint8_t> test8b(type, count, iterations, std::move(flags));
+       /* Test<uint8_t> test8b(type, count, iterations, std::move(flags));
         runUint8_t(test8b);
 
         Test<uint16_t> test16b(type, count, iterations, std::move(flags));
-        runUint16_t(test16b);
+        runUint16_t(test16b);*/
 
 
     Test<uint32_t> test32b(type, count, iterations, std::move(flags));

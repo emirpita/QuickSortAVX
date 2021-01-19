@@ -52,8 +52,8 @@ class InputDescending : public InputData<NumericType> {
 public:
     InputDescending(size_t count) : super(count) {
         for (size_t i = 0; i < InputData<NumericType>::n; i++) {
-            InputData<NumericType>::array[i] = NumericType(
-                    (InputData<NumericType>::n - i + 1) % std::numeric_limits<NumericType>::max());
+            InputData<NumericType>::array[i] = NumericType(fmod(
+                    (InputData<NumericType>::n - i + 1) ,std::numeric_limits<NumericType>::max()));
         }
     }
 };
