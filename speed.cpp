@@ -509,7 +509,7 @@ void usage() {
     puts("speed SIZE ITERATIONS INPUT [options]");
     puts("");
     puts("where");
-    puts("* SIZE       - number of 32-bit elements");
+    puts("* SIZE       - number of elements");
     puts("* ITERATIONS - number of iterations");
     puts("* INPUT      - one of:");
     puts("                 ascending (or asc)");
