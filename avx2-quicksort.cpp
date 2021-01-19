@@ -27,10 +27,7 @@ namespace qs {
             }
 
         }
-        int compare (const void * a, const void * b)
-        {
-            return ( *(float*)a - *(float*)b );
-        }
+
         void quicksort_ps(float* array, int left, int right) {
 
             int i = left;
