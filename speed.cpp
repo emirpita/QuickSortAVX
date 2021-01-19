@@ -12,7 +12,7 @@
 #endif
 #include "input_data.cpp"
 #include "quicksort-all.cpp"
-//#define USE_RDTSC // undef to get measurments in seconds
+#define USE_RDTSC // undef to get measurments in seconds
 #ifdef USE_RDTSC
 #   include "rdtsc.cpp"
 #else
