@@ -25,7 +25,6 @@ namespace qs {
             if (i < right) {
                 quicksort_32(array, i, right);
             }
-
         }
 
         void quicksort_ps(float* array, int left, int right) {
