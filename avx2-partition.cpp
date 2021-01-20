@@ -1,17 +1,30 @@
 #include <x86intrin.h>
 #include <immintrin.h>
 #include <cstdint>
+#include <iomanip>
+#include <iostream>
 
 
 namespace qs {
 
     namespace avx2 {
 
+        template<class T>
+        inline void Log(const __m256i &value) {
+            const size_t n = sizeof(__m256i) / sizeof(T);
+            T buffer[n];
+            _mm256_storeu_si256((__m256i *) buffer, value);
+            for (int i = 0; i < n; i++)
+                std::cout << buffer[i] << " ";
+        }
+
+
         //****************************************************************
         //32 bitni integer brojevi
         __m256i FORCE_INLINE bitmask_to_bytemask_epi32(uint8_t bm) {
 
             const __m256i mask = _mm256_set1_epi32(bm);
+            Log<uint32_t>(mask);
             const __m256i bits = _mm256_setr_epi32(0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80);
             const __m256i tmp = _mm256_and_si256(mask, bits);
 
